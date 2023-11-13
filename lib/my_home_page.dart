@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:shake/shake.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -72,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: NewWidget(widget: widget),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -183,4 +184,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     // TODO: implement didRequestAppExit
     throw UnimplementedError();
   }
+}
+
+class NewWidget extends StatelessWidget {
+  const NewWidget({
+    super.key,
+    required this.widget,
+  });
+
+  final MyHomePage widget;
+
+  @override
+  Widget build(BuildContext context) => widget.title.text.size(30).color(Colors.greenAccent).bold.make();
 }
