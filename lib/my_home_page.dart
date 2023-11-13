@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:shake/shake.dart';
 
@@ -19,18 +21,28 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   int _counter = 0;
+  late ShakeDetector detector;
 
   @override
   void initState() {
     super.initState();
 
-    ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: (){
+    WidgetsBinding.instance.addObserver(this);
+
+    detector = ShakeDetector.autoStart(onPhoneShake: (){
       setState(() {
         _counter++;
       });
     }, shakeThresholdGravity: 1.5);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   void _incrementCounter() {
@@ -97,5 +109,78 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  @override
+  void didChangeAccessibilityFeatures() {
+    // TODO: implement didChangeAccessibilityFeatures
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    switch(state) {
+      case AppLifecycleState.resumed:
+        detector.startListening();
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.paused:
+        detector.stopListening();
+        break;
+      case AppLifecycleState.detached:
+        break;
+      case AppLifecycleState.hidden:
+        break;
+    }
+  }
+
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    // TODO: implement didChangeLocales
+  }
+
+  @override
+  void didChangeMetrics() {
+    // TODO: implement didChangeMetrics
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    // TODO: implement didChangePlatformBrightness
+  }
+
+  @override
+  void didChangeTextScaleFactor() {
+    // TODO: implement didChangeTextScaleFactor
+  }
+
+  @override
+  void didHaveMemoryPressure() {
+    // TODO: implement didHaveMemoryPressure
+  }
+
+  @override
+  Future<bool> didPopRoute() {
+    // TODO: implement didPopRoute
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> didPushRoute(String route) {
+    // TODO: implement didPushRoute
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
+    // TODO: implement didPushRouteInformation
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AppExitResponse> didRequestAppExit() {
+    // TODO: implement didRequestAppExit
+    throw UnimplementedError();
   }
 }
